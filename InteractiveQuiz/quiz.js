@@ -1,110 +1,91 @@
-const quizData = [
+const questions = [
   {
-    question: "What does HTML stand for?",
-    options: [
-      "Hyper Trainer Marking Language",
-      "Hyper Text Markup Language",
-      "Hyper Text Marketing Language",
-      "Hyper Transfer Markup Language"
-    ],
-    answer: "Hyper Text Markup Language"
-  },
-  {
-    question: "Which CSS property is used to change text color?",
-    options: ["background-color", "color", "font-color", "text-color"],
-    answer: "color"
-  },
-  {
-    question: "What does JS stand for?",
-    options: ["JavaServer", "JavaScript", "JustScript", "JScript"],
+    question: "Which language runs in a web browser?",
+    options: ["Java", "C", "Python", "JavaScript"],
     answer: "JavaScript"
   },
   {
-    question: "Which tag is used to link JavaScript file in HTML?",
-    options: ["<js>", "<link>", "<script>", "<style>"],
-    answer: "<script>"
+    question: "What does CSS stand for?",
+    options: ["Central Style Sheets", "Cascading Style Sheets", "Cascading Simple Sheets", "Cars SUVs Sailboats"],
+    answer: "Cascading Style Sheets"
   },
   {
-    question: "Which of the following is not a valid CSS unit?",
-    options: ["px", "em", "cm", "ptt"],
-    answer: "ptt"
+    question: "What does HTML stand for?",
+    options: ["HyperText Markup Language", "Hyper Tool Markup Language", "Hyperlinks and Text Markup Language", "Home Tool Markup Language"],
+    answer: "HyperText Markup Language"
+  },
+  {
+    question: "What does DOM stand for?",
+    options: ["Document Object Model", "Data Object Model", "Document Oriented Model", "Digital Object Manager"],
+    answer: "Document Object Model"
+  },
+  {
+    question: "Which of the following is not a JavaScript data type?",
+    options: ["String", "Boolean", "Float", "Undefined"],
+    answer: "Float"
   }
 ];
 
-let currentQuestionIndex = 0;
+let currentQuestion = 0;
+let score = 0;
 let timeLeft = 60;
 let timerInterval;
+let userAnswers = new Array(questions.length).fill(null); // Must match number of questions
 
 function startQuiz() {
   document.getElementById("overlay").style.display = "none";
-  document.getElementById("quiz-container").classList.add("active");
-  document.getElementById("timer").style.display = "block";
-  renderQuestion();
+  document.querySelector(".container").classList.add("active");
+  loadQuestion();
   startTimer();
 }
 
-function renderQuestion() {
+function loadQuestion() {
   const quizForm = document.getElementById("quizForm");
-  quizForm.innerHTML = '';
+  const q = questions[currentQuestion];
 
-  const q = quizData[currentQuestionIndex];
-  const questionDiv = document.createElement("div");
-  questionDiv.classList.add("question");
-
-  const questionTitle = document.createElement("h3");
-  questionTitle.innerText = `${currentQuestionIndex + 1}. ${q.question}`;
-  questionDiv.appendChild(questionTitle);
-
-  const optionsDiv = document.createElement("div");
-  optionsDiv.classList.add("options");
-
-  q.options.forEach(option => {
-    const label = document.createElement("label");
-    const input = document.createElement("input");
-
-    input.type = "radio";
-    input.name = `question${currentQuestionIndex}`;
-    input.value = option;
-
-    const selected = document.querySelector(`input[name="question${currentQuestionIndex}"]:checked`);
-    if (selected && selected.value === option) {
-      input.checked = true;
-    }
-
-    label.appendChild(input);
-    label.appendChild(document.createTextNode(option));
-    optionsDiv.appendChild(label);
-  });
-
-  questionDiv.appendChild(optionsDiv);
-  quizForm.appendChild(questionDiv);
+  quizForm.innerHTML = `
+    <div class="question">
+      <h3>Q${currentQuestion + 1}: ${q.question}</h3>
+      <div class="options">
+        ${q.options.map((opt) => `
+          <label>
+            <input type="radio" name="option" value="${opt}" ${userAnswers[currentQuestion] === opt ? 'checked' : ''}>
+            ${opt}
+          </label>`).join("")}
+      </div>
+    </div>
+  `;
 }
 
 function nextQuestion() {
-  if (currentQuestionIndex < quizData.length - 1) {
-    currentQuestionIndex++;
-    renderQuestion();
+  saveAnswer();
+  if (currentQuestion < questions.length - 1) {
+    currentQuestion++;
+    loadQuestion();
   }
 }
 
 function prevQuestion() {
-  if (currentQuestionIndex > 0) {
-    currentQuestionIndex--;
-    renderQuestion();
+  saveAnswer();
+  if (currentQuestion > 0) {
+    currentQuestion--;
+    loadQuestion();
+  }
+}
+
+function saveAnswer() {
+  const selected = document.querySelector('input[name="option"]:checked');
+  if (selected) {
+    userAnswers[currentQuestion] = selected.value;
   }
 }
 
 function startTimer() {
-  const timerDisplay = document.getElementById("timer");
-  timerDisplay.innerText = `Time Left: ${timeLeft}s`;
-
   timerInterval = setInterval(() => {
     timeLeft--;
-    timerDisplay.innerText = `Time Left: ${timeLeft}s`;
-
+    document.getElementById("timer").textContent = `Time Left: ${timeLeft}s`;
     if (timeLeft <= 0) {
       clearInterval(timerInterval);
-      timerDisplay.innerText = "Time's up!";
       submitQuiz();
     }
   }, 1000);
@@ -112,29 +93,33 @@ function startTimer() {
 
 function submitQuiz() {
   clearInterval(timerInterval);
+  saveAnswer();
 
-  let score = 0;
-  quizData.forEach((q, index) => {
-    const selected = document.querySelector(`input[name="question${index}"]:checked`);
-    if (selected && selected.value === q.answer) {
-      score++;
-    }
+  score = 0;
+  questions.forEach((q, i) => {
+    if (userAnswers[i] === q.answer) score++;
   });
 
-  document.getElementById("result").innerText =
-    `You scored ${score} out of ${quizData.length} questions correctly.`;
+  document.getElementById("result").textContent = `You scored ${score} out of ${questions.length}!`;
 
-  document.querySelectorAll("input[type=radio]").forEach(input => {
-    input.disabled = true;
-  });
+  // Show correct/incorrect
+  document.getElementById("quizForm").innerHTML = questions.map((q, i) => {
+    return `
+      <div class="question">
+        <h3>Q${i + 1}: ${q.question}</h3>
+        <div class="options">
+          ${q.options.map(opt => `
+            <label style="background-color: ${opt === q.answer ? '#c8e6c9' : userAnswers[i] === opt ? '#ffcdd2' : '#f5f5f5'};">
+              <input type="radio" disabled ${userAnswers[i] === opt ? 'checked' : ''}>
+              ${opt}
+            </label>
+          `).join("")}
+        </div>
+      </div>
+    `;
+  }).join("");
 }
 
 function restartQuiz() {
-  clearInterval(timerInterval);
-  timeLeft = 60;
-  currentQuestionIndex = 0;
-  document.getElementById("result").innerText = '';
-  document.querySelectorAll("input[type=radio]").forEach(input => input.disabled = false);
-  renderQuestion();
-  startTimer();
+  location.reload();
 }
