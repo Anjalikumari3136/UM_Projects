@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Memory Card Game</title>
+    <link rel="stylesheet" href="cardgame.css" />
+  </head>
+  <body>
+    <div class="container">
+      <h1>🎯 Memory Card Game</h1>
+      <div class="scoreboard">
+        <span>🧠 Moves: <span id="moves">0</span></span>
+        <span>⏱️ Time: <span id="timer">0</span> sec</span>
+        <button id="newGameBtn">🔁 Restart</button>
+      </div>
+      <div id="gameBoard" class="game-board"></div>
+      <div id="message" class="message hidden">
+        🎉 Congratulations, Memory Champ...You Won the game! 🎉
+      </div>
+    </div>
+    <script src="cardgame.js"></script>
+  </body>
+</html>

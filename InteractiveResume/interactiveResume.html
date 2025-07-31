@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Anjali Kumari - Interactive Resume</title>
+    <link rel="stylesheet" href="resume.css"/>
+  </head>
+  <body>
+    <header>
+      <h1>Anjali Kumari</h1>
+      <p>Computer Science Engineering Student</p>
+    </header>
+
+    <nav class="navbar">
+      <a href="#about">About</a>
+      <a href="#education">Education</a>
+      <a href="#skills">Skills</a>
+      <a href="#projects">Projects</a>
+      <a href="#contact">Contact</a>
+    </nav>
+
+  <section id="about" class="section about-box">
+  <div class="about-container">
+    <div class="about-image">
+      <img src="profileimage.jpg" alt="Anjali Kumari" />
+    </div>
+    <div class="about-text">
+      <h2>About Me</h2>
+      <p>
+        I am Anjali Kumari, a passionate Computer Science Engineering student. Skilled in web development, UI/UX design. I love building interactive websites and aim to solve real-world problems through tech.
+      </p>
+    </div>
+  </div>
+</section>
+
+    <section id="education">
+      <h2>Education</h2>
+      <ul>
+        <li>B.Tech in Computer Science, 2023–2027</li>
+        <li>K.R Mangalam University</li>
+      </ul>
+    </section>
+
+    <section id="skills">
+      <h2>Skills</h2>
+      <div class="skills-container">
+        <span class="skill" data-tooltip="React.js Projects">React</span>
+        <span class="skill" data-tooltip="Modern CSS & Flexbox">CSS</span>
+        <span class="skill" data-tooltip="Javascript Library or framework">JavaScript</span>
+        <span class="skill" data-tooltip="Frontend Framework">HTML</span>
+        <span class="skill" data-tooltip="Database Design">MongoDB</span>
+        <span class="skill" data-tooltip="GitHub Repositories">Git/GitHub</span>
+      </div>
+    </section>
+
+    <section id="projects">
+      <h2>Projects</h2>
+      <ul class="project-list">
+        <li>Weather App using OpenWeatherMap API</li>
+        <li>Food Waste Management MERN App</li>
+        <li>Personal Portfolio</li>
+      </ul>
+    </section>
+
+    <section id="contact">
+      <h2>Contact Me</h2>
+      <div class="contact-wrapper">
+        <form class="contact-form">
+          <input type="text" placeholder="Your Name" required />
+          <input type="email" placeholder="Your Email" required />
+          <textarea placeholder="Your Message" rows="4" required></textarea>
+          <button type="submit">Send Message</button>
+        </form>
+      </div>
+    </section>
+
+    <script src="resume.js"></script>
+  </body>
+</html>
