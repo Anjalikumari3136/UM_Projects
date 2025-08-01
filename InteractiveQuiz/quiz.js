@@ -55,7 +55,24 @@ function loadQuestion() {
       </div>
     </div>
   `;
+
+  // Show/hide navigation buttons
+  const prevBtn = document.querySelector(".nav-buttons button:nth-child(1)");
+  const nextBtn = document.querySelector(".nav-buttons button:nth-child(2)");
+
+  if (currentQuestion === 0) {
+    prevBtn.style.display = "none";
+  } else {
+    prevBtn.style.display = "inline-block";
+  }
+
+  if (currentQuestion === questions.length - 1) {
+    nextBtn.style.display = "none";
+  } else {
+    nextBtn.style.display = "inline-block";
+  }
 }
+
 
 function nextQuestion() {
   saveAnswer();
